@@ -32,4 +32,9 @@ public class RrestController01 {
 	public String get(@RequestParam("key") String key) {
 		return redisService.get(key);
 	}
+
+	@GetMapping("/multiParma")
+	public String get222(@RequestParam("key") String key, @RequestParam("kk") String kk) {
+		return redisService.get22(key, kk);
+	}
 }

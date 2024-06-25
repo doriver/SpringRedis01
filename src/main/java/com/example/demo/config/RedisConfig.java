@@ -34,7 +34,7 @@ public class RedisConfig {
 	@Bean
 	public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
 		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig() //
-				.prefixCacheNameWith(this.getClass().getPackageName() + ".") //
+//				.prefixCacheNameWith(this.getClass().getPackageName() + ".") // 이거 있으면 Redis에 저장되는 key앞에 com.example.demo.config. 붙음
 				.entryTtl(Duration.ofHours(1)) //
 				.disableCachingNullValues();
 
