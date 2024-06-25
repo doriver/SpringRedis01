@@ -15,7 +15,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableCaching
 public class RedisConfig {
-/*
+/*	이건 Redis에 저장 조회 했을때 설정
  * 
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
@@ -31,14 +31,19 @@ public class RedisConfig {
 		return template;
 	}
 */	
+	// RedisCacheManager는 여러 extends와 implements를 거쳐서 CacheManager를 구현한거임 
 	@Bean
 	public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig() //
+		RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig() // static메서드 defaultCacheConfig
 //				.prefixCacheNameWith(this.getClass().getPackageName() + ".") // 이거 있으면 Redis에 저장되는 key앞에 com.example.demo.config. 붙음
-				.entryTtl(Duration.ofHours(1)) //
-				.disableCachingNullValues();
+				.entryTtl(Duration.ofHours(1)) // 캐시에 저장된 항목의 Time-To-Live(TTL)을 설정, 캐시 항목의 유효한 기간을 의미, 이 기간이 지나면 캐시에서 자동으로 제거
+				// serializeKeysWith() : Redis에 저장되는 캐시 키를 직렬화하는 방식을 지정, serializeKeysWith()이 없으면 기본 직렬화 방식이 사용됨 
+//				.serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
+//		        .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()))
+				.disableCachingNullValues(); // null 값을 캐시에 저장하지 않도록 설정
+		
 
-		return RedisCacheManager.builder(connectionFactory) //
+		return RedisCacheManager.builder(connectionFactory) // static메서드 builder 반환타입은 RedisCacheManagerBuilder 
 				.cacheDefaults(config) //
 				.build();
 	}
